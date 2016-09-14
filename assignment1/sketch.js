@@ -19,18 +19,14 @@ var centY = 240;
 
 function setup()
 {
-  noLoop();
   createCanvas(400, 500);
   background(color(53, 193, 209));
   smooth();
   
   strokeWeight(2);
   strokeJoin(ROUND);
-}
-
-function draw() {
-  //The island shape is a semi-randomly shaped island
-  function island(xpos, ypos) {
+  
+  function island() {
     myisland = beginShape();
   
     var initialx = 150;
@@ -184,5 +180,9 @@ function draw() {
   vertex(centX - 10,centY - 20);
   vertex(centX - 10,centY - 20);
   endShape();
+}
+
+function draw() {
+  //The island shape is a semi-randomly shaped island
 
 }
