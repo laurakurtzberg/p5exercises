@@ -394,42 +394,85 @@ var myschedule =
 function setup() {
   createCanvas(canvaswidth,canvasheight);
   noLoop();
-  background(51);
   angleMode(DEGREES);
+  colorMode(RGB);  // Try changing to HSB.
+  from = color('rgba(2, 59, 247,0.8)');
+  to = color('rgba(247, 2, 39,0.8)');
+  inter1 = lerpColor(from, to, .1);
+  inter2 = lerpColor(from, to, .2);
+  inter3 = lerpColor(from, to, .3);
+  inter4 = lerpColor(from, to, .4);
+  inter5 = lerpColor(from, to, .5);
+  inter6 = lerpColor(from, to, .6);
+  inter7 = lerpColor(from, to, .7);
+  inter8 = lerpColor(from, to, .8);
+  inter9 = lerpColor(from, to, .9);
 }
 
 function draw() {
   b = color('hsla(255, 100%, 50%, 0.2)');
   fill(b);
   stroke(255);
+  /*
   arc(150, 150, 180, 180, 125, 165, PIE); //Monday
   arc(150, 150, 180, 180, 165, 205, PIE); //Tuesday
   arc(150, 150, 180, 180, 205, 245, PIE); //Wednesday
   arc(150, 150, 180, 180, 245, 285, PIE); //Thursday
   arc(150, 150, 180, 180, 285, 325, PIE); //Friday
   arc(150, 150, 180, 180, 325, 365, PIE); //Saturday
-  arc(150, 150, 180, 180, 365, 55, PIE); //Sunday
+  arc(150, 150, 180, 180, 365, 55, PIE); //Sunday */
   
   c = color('hsla(160, 100%, 50%, 0.5)');
   fill(c);
+  var row, column;
+  
+  function checkType(v) {
+    if (v == "commute") {
+      return inter1;
+    } else if (v =="yoga") {
+      return inter2;
+    } else if (v == "food") {
+      return inter3;
+    } else if (v == "capoeira") {
+      return inter4;
+    } else if (v == "moment") {
+      return inter5;
+    } else if (v == "class") {
+      return inter6;
+    } else if (v == "prep") {
+      return inter7;
+    } else if (v == "appointment") {
+      return inter8;
+    } else if (v == "meeting") {
+      return inter9;
+    } else {
+      return to;
+    }
+  }
   
   noStroke();
   for (var element of myschedule) {
     timewindow = abs(element.endtime - element.starttime);
-    
+    column = map(lineassign(element.day), 0, 7, 150, canvaswidth);
+    row = map(element.starttime+(timewindow/2), 6, 24, 0, canvasheight);
+
     if (timewindow > 0) {
+      fill(checkType(element.type));
+      stroke(checkType(element.type));
       noStroke();
-      ellipse(map(lineassign(element.day), 0, 7, 150, canvaswidth), map(element.starttime+(timewindow/2), 6, 24, 200, canvasheight), map(timewindow, 0, 24, 0, canvaswidth));
-    } else if (timewindow == 0) {
-       push();
-       stroke(255);
+      ellipse(column, row, map(timewindow, 0, 24, 0, canvaswidth));
+    } else if (timewindow === 0) {
+       fill(checkType(element.type));
+       stroke(checkType(element.type));
+       stroke(0);
        strokeWeight(3);
+       line(row+20, column, row+40, column);
+       
+       /* Radial version inside the push pop
        translate(150,150);
        rotate(-235);
-        
        rotate(map(element.starttime, 6, 22, (40*lineassign(element.day)), 40 + (40*lineassign(element.day)) ));
-       line(0, 0, 110, 0);
-       pop();
+       */
     }
   }
   
